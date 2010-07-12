@@ -1,4 +1,5 @@
-Uniform - Lightweight HTML Forms for [Kohana](http://kohanaframework.org/)
+Uniform - Lightweight HTML Forms for [Kohana](http://kohanaframework.org)
+=========================================================================
 
 This module is experimental. 
 
@@ -9,11 +10,11 @@ Uniform builds on the premises that
 * as much work as possible should be left to the framework (eg. Form and Validate classes)
 
 Examples
--------------
+--------
 
 Once you added the Uniform module, making forms is easy:
 
-1) Create a Uniform_Fieldset class in 'application/classes/uniform/fieldset/':
+1.    Create a Uniform_Fieldset class in 'application/classes/uniform/fieldset/':
 
     class Uniform_Fieldset_User extends Uniform_Fieldset {
 
@@ -43,7 +44,7 @@ Once you added the Uniform module, making forms is easy:
 
     }
     
-2) Once you have the Fieldset, you can create Forms from it. Create a Uniform_Form class in 'application/classes/uniform/form/':
+2.    Once you have the Fieldset, you can create Forms from it. Create a Uniform_Form class in 'application/classes/uniform/form/':
 
     class Uniform_Form_Login extends Uniform_Form {
 
@@ -65,7 +66,7 @@ Once you added the Uniform module, making forms is easy:
 
     }
 
-3) Done, you can now render and use your form:
+3.    Done, you can now render and use your form:
 
 In your controller:
 
