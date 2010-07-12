@@ -10,7 +10,7 @@ class Uniform_Form_Core {
     protected $fields;
     protected $_template_fieldset = '_uniform/fieldset';
 
-    public $open = array(NULL, array("method"=>'POST'));
+    public $open = array(NULL, array("name"=>"Abschicken", "method"=>'POST'));
 
 
     public function __construct($fieldset, $fields, $bind=array())
@@ -63,7 +63,7 @@ class Uniform_Form_Core {
 
             $this->render_fieldset() .
 
-            Form::submit('submit', $submit_name).
+            Form::submit('submit', "Abschicken").
             Form::close();
     }
 
@@ -120,6 +120,15 @@ class Uniform_Form_Core {
     public function __toString()
     {
         return $this->render();
+    }
+
+    /*
+     * removes a Field
+     */
+    public function remove_field( $fname )
+    {
+        unset($this->_fields[$fname]);
+        return $this;
     }
 
 }

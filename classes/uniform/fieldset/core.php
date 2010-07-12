@@ -38,7 +38,7 @@ class Uniform_Fieldset_Core {
             $fname = $name;
             $ftype = $prop['type'];
 
-            $this->addfield($fname)
+            $this->add_field($fname)
                 ->type($this->field_types[$ftype])
                 ->length( isset($prop['character_maximum_length']) ?
                     $prop['character_maximum_length'] : 30
@@ -110,7 +110,7 @@ class Uniform_Fieldset_Core {
     /*
      * Sets a Field the current Field in the Fieldset
      */
-    public function addfield( $fname )
+    public function add_field( $fname )
     {
 
         if( isset($this->fields[$fname]) )
@@ -132,4 +132,5 @@ class Uniform_Fieldset_Core {
 
         return $this;
     }
+
 }
