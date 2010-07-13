@@ -14,7 +14,7 @@ class Uniform_Field_Core {
 
     public static function factory($field_class, $params = array())
     {
-        $class = 'Uniform_Field_'.$field_class;
+        $class = 'Uniform_Field_' . ucfirst($field_class);
         return new $class($params);
     }
 
@@ -221,8 +221,8 @@ class Uniform_Field_Core {
     public function render($prefix=NULL, $suffix=NULL)
     {
         $params = $this->params();
-        if(isset($params['type']) && $params['type']=='hidden')
-            $this->label(False);
+        if(isset($params['type']) && strtolower($params['type'])=='hidden')
+            $this->label(False)->prefix('')->suffix('');
 
         return View::factory($this->_template)
             ->set(array(

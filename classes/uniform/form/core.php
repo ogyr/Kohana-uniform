@@ -7,16 +7,34 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
     protected $_open = array();
     protected $_template_form = '_uniform/form';
-    protected $_fieldsets = array();
+    private $_fieldsets = array();
 
+    protected $fieldsets = array();
 
-    public function __construct($fieldset, $fields=NULL, $bind=array())
+    public function __construct( $bind=NULL )
     {
-        $this->add_fieldset($fieldset, $fields);
+        //add fields
+        foreach( $this->fieldsets as $fieldset => $fields )
+        {
+            $this->add_fieldset($fieldset, $fields);
+        }
+
+        //default Form::open params
+        $this->open(
+                NULL,
+                array(
+                    "method" => 'POST',
+                    'id' => strtolower(array_pop(explode('_', get_class($this)))).'_form'
+                )
+            );
+
+        //initialization hook
         $this->initialize();
 
+        //possibly already bind values
         $this->bind($bind);
 
+        return $this;
     }
 
 
@@ -25,13 +43,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
      */
     public function initialize()
     {
-        return $this->open(
-                NULL,
-                array(
-                    "method" => 'POST',
-                    'id' => strtolower(array_pop(explode('_', get_class($this)))).'_form'
-                )
-            );
+        return $this;
     }
 
 
@@ -39,10 +51,10 @@ class Uniform_Form_Core extends Uniform_Fieldset {
      * Adds $fields of $fieldset to this form
      * If no $fields are specified, all fields are added
      */
-    public function add_fieldset($fieldset, $fields=NULL)
+    public function add_fieldset($fieldset_name, $fields=NULL)
     {
-        $fieldset_name = 'Uniform_Fieldset_' . ucfirst($fieldset);
-        $fieldset = new $fieldset_name();
+        $fieldset_class = 'Uniform_Fieldset_' . ucfirst($fieldset_name);
+        $fieldset = new $fieldset_class();
 
         //add $fieldset to list of fieldsets
         if( !isset($this->_fieldsets[$fieldset_name]) )
@@ -50,7 +62,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
         //specifying fieldnames in a string separated by blanks is possible
         if( is_string($fields) )
-            $fields = explode(' ', $fields);
+            $fields = preg_split("/[\s,]+/", $fields, -1, PREG_SPLIT_NO_EMPTY);
 
         //if no fields are specified, add all fieldset fields
         if( is_null($fields) )
@@ -67,7 +79,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             }
 
             $this->_fields[$f] = $field;
-            $this->_fieldsets[$fieldset_name][$f] = $this->_fields[$f];
+            $this->_fieldsets[strtolower($fieldset_name)][$f] = $this->_fields[$f];
         }
 
         return $this;
@@ -87,16 +99,9 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $this;
     }
 
-
-    public function field($fname)
-    {
-        return $this->_fields[$fname];
-    }
-
-
     public function render_field($fname)
     {
-        return $this->field($fname)->render();
+        return $this->_fields[$fname]->render();
     }
 
 
@@ -109,6 +114,10 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             ));
     }
 
+    public function field($fname)
+    {
+        return $this->_fields[$fname];
+    }
 
     public function render()
     {
@@ -126,14 +135,17 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     }
 
 
-    public function bind($bind=array(), $use_filter=False)
+    public function bind($bind=NULL, $use_filter=False)
     {
+        if( is_null($bind) )
+            return $this;
+
         if( $use_filter )
             $bind = $this->in_filter($bind);
 
         foreach($bind as $k => $v)
         {
-            if( $this->field($k) )
+            if( isset($this->_field[$k]) )
             {
                 //check if field is an object (a la Jelly Model for relations)
                 if( is_object($v) )
@@ -198,7 +210,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $data;
     }
 
-    
+
 
 }
 

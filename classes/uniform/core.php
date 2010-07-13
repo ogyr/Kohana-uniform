@@ -2,7 +2,7 @@
 
 class Uniform_Core {
 
-    public static function factory($form_class, $bind=array())
+    public static function factory( $form_class, $bind=NULL )
     {
         $class = 'Uniform_Form_'.$form_class;
         return new $class($bind);
