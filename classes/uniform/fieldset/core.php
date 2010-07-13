@@ -69,7 +69,7 @@ class Uniform_Fieldset_Core {
      *
      * Delegates to Field methods and returns again this Fieldset instance
      */
-    protected function __call($func, $args)
+    public function __call($func, $args)
     {
         //echo Kohana::debug(get_class_methods($this->_fields[$this->_current]));
 
@@ -106,6 +106,15 @@ class Uniform_Fieldset_Core {
 
         $this->_current = $fname;
         return $this;
+    }
+
+
+    /*
+     * Returns the Field instance
+     */
+    public function get_field( $fname )
+    {
+        return $this->field($fname)->field();
     }
 
 

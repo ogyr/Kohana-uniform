@@ -109,7 +109,8 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     {
         return View::factory($this->_template_fieldset)
             ->set(array(
-                'fields'    => is_null($fields) ? $this->_fields : $fields,
+                'fields'    => is_null($fields) ? $this->_fields :
+                    array_intersect_key($this->_fields, array_flip($fields)),
                 'form'      => $this
             ));
     }
@@ -145,7 +146,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
         foreach($bind as $k => $v)
         {
-            if( isset($this->_field[$k]) )
+            if( isset($this->_fields[$k]) )
             {
                 //check if field is an object (a la Jelly Model for relations)
                 if( is_object($v) )
@@ -154,6 +155,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
                     $this->field($k)->value($v);
             }
         }
+
         return $this;
     }
 
