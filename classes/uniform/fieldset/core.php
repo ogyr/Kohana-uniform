@@ -2,9 +2,11 @@
 
 class Uniform_Fieldset_Core {
 
-    public $fields = array();
-    private $current;
-    private $table; 
+    protected $_fields = array();
+    protected $_current;
+    protected $_table;
+    protected $_pk;
+    protected $_template_fieldset = '_uniform/fieldset';
 
     public function __construct($table=NULL, $pk=NULL)
     {
@@ -14,11 +16,11 @@ class Uniform_Fieldset_Core {
 
     public function mysql_init($table, $pk)
     {
-        $this->table = $table;
-        $this->pk = $pk;
+        $this->_table = $table;
+        $this->_pk = $pk;
 
         //default field types from db
-        $this->field_types = array(
+        $field_types = array(
             'string'    => 'Char',
             'blob'      => 'Text',
             'int'       => 'Int',
@@ -29,7 +31,7 @@ class Uniform_Fieldset_Core {
             'real'      => 'Float',
         );
 
-        $result = Database::instance()->list_columns($this->table);
+        $result = Database::instance()->list_columns($this->_table);
 
         //echo Kohana::debug($result); die();
 
@@ -39,7 +41,7 @@ class Uniform_Fieldset_Core {
             $ftype = $prop['type'];
 
             $this->add_field($fname)
-                ->type($this->field_types[$ftype])
+                ->type($field_types[$ftype])
                 ->length( isset($prop['character_maximum_length']) ?
                     $prop['character_maximum_length'] : 30
                 )
@@ -56,9 +58,9 @@ class Uniform_Fieldset_Core {
     public function type( $field_type=NULL )
     {
         if( is_null($field_type) )
-            return get_class($this->fields[$this->current]);
+            return get_class($this->_fields[$this->_current]);
 
-        $this->fields[$this->current] = $this->fields[$this->current]->clone_to($field_type);
+        $this->_fields[$this->_current] = $this->_fields[$this->_current]->clone_to($field_type);
         return $this;
     }
 
@@ -69,11 +71,11 @@ class Uniform_Fieldset_Core {
      */
     protected function __call($func, $args)
     {
-        //echo Kohana::debug(get_class_methods($this->fields[$this->current]));
+        //echo Kohana::debug(get_class_methods($this->_fields[$this->_current]));
 
-        if( method_exists($this->fields[$this->current], $func) )
+        if( method_exists($this->_fields[$this->_current], $func) )
         {
-            call_user_func_array(array($this->fields[$this->current], $func), $args);
+            call_user_func_array(array($this->_fields[$this->_current], $func), $args);
         }
         else
         {
@@ -90,46 +92,55 @@ class Uniform_Fieldset_Core {
     {
         if( is_null($fname) )
         {
-            return $this->fields[$this->current];
+            return $this->_fields[$this->_current];
         }
 
-        if(!isset($this->fields[$fname]))
+        if(!isset($this->_fields[$fname]))
         {
             throw new Exception(
                     "The form field \"$fname\" does not exist!<br />" .
                     "Try these instead:" .
-                    Kohana::debug(array_keys($this->fields))
+                    Kohana::debug(array_keys($this->_fields))
             );
         }
 
-        $this->current = $fname;
+        $this->_current = $fname;
         return $this;
     }
 
 
     /*
-     * Sets a Field the current Field in the Fieldset
+     * Adds a field to the fieldset
      */
     public function add_field( $fname )
     {
 
-        if( isset($this->fields[$fname]) )
+        if( isset($this->_fields[$fname]) )
         {
             throw new Exception(
                     "The form field \"$fname\" does already exist!<br />" .
                     "The following fields are already defined:" .
-                    Kohana::debug(array_keys($this->fields))
+                    Kohana::debug(array_keys($this->_fields))
             );
         }
 
-        $this->fields[$fname] = Uniform_Field::factory('Generic', array('name' => $fname));
-        $this->current = $fname;
+        $this->_fields[$fname] = Uniform_Field::factory('Generic', array('name' => $fname));
+        $this->_current = $fname;
 
         //defaults
         $this->hname(ucfirst($fname))
             ->suffix("<br />\n")
             ->params(array());
 
+        return $this;
+    }
+
+    /*
+     * removes a Field
+     */
+    public function remove_field( $fname )
+    {
+        unset($this->_fields[$fname]);
         return $this;
     }
 
