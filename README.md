@@ -96,6 +96,7 @@ From your project root (assuming you have git installed) simply do:
     
     git clone git://github.com/rafsoaken/Kohana-uniform.git modules/uniform
 
+
 * or add it as a submodule to your git project ([Kohana with git submodules](http://kohanaframework.org/guide/tutorials.git)). 
 From your project root do:
 
