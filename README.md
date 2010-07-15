@@ -1,4 +1,4 @@
-Uniform - Lightweight HTML Forms for [Kohana](http://kohanaframework.org)
+Uniform - Lightweight Form generation module for [Kohana](http://kohanaframework.org)
 =========================================================================
 
 This module is experimental.
@@ -10,7 +10,7 @@ Uniform builds on the premises that
 * as much work as possible should be left to the framework (eg. Form and Validate classes)
 
 Examples
---------
+----------
 
 Once you added the Uniform module, making forms is easy:
 
@@ -85,7 +85,32 @@ In your controller:
     }
   
   
+Installation
+-----------
 
+Like with other Kohana modules you either 
+
+* download the archive and extract it to a module folder, eg. modules/uniform
+* or even better (because you can easily follow the latest releases) clone the git repository. 
+From your project root (assuming you have git installed) simply do:
+    
+    git clone git://github.com/rafsoaken/Kohana-uniform.git modules/uniform
+
+* or add it as a submodule to your git project ([Kohana with git submodules](http://kohanaframework.org/guide/tutorials.git)). 
+From your project root do:
+
+    git submodule add git://github.com/rafsoaken/Kohana-uniform.git module/uniform;
+    git submodule init; git submodule update;
+    
+You are done after enabling the module in your bootstrap.php file. 
+Under the section "Enable modules ..." add a line to the array in the Kohana::modules() call: 
+
+    Kohana::modules(array(
+        ...
+        'uniform'  => MODPATH.'uniform',  // Uniforms form library
+    ));
+
+    
 
 
 
