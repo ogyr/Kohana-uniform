@@ -231,5 +231,42 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $data;
     }
 
+    public function params( $input=NULL )
+    {
+        if( is_null($input) )
+        {
+            return  isset($this->_open[1]) ? $this->_open[1] : array();
+        }
+        $this->_open[1] = $input;
+    }
+
+    public function set_param( $name, $val )
+    {
+        if( isset($this->_open[1]) )
+        {
+            $this->_open[1][$name] = $val;
+        }
+        return $this;
+    }
+
+    public function unset_param( $name )
+    {
+        if( isset($this->_open[1][$name]) )
+        {
+            unset($this->_open[1][$name]);
+        }
+        return $this;
+    }
+
+    public function action( $input=NULL )
+    {
+        if( is_null($input) )
+        {
+            return  isset($this->_open[0]) ? $this->_open[0] : NULL;
+        }
+        $this->_open[0] = $input;
+        return $this;
+    }
+
 }
 
