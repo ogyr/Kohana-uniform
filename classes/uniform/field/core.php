@@ -177,20 +177,23 @@ class Uniform_Field_Core {
         return $this;
     }
 
-    public function check()
+    public function check( $allow_empty=FALSE )
     {
         //do validation on
         if(is_null($this->validation()))
+        {
             return True;
+        }
 
         $validate = $this->validation();
         $validate[$this->name()] = $this->value();
-        $success = $validate->check();
+        //echo Kohana::debug($validate);
+        $success = $validate->check($allow_empty);
 
         if( $success )
             return True;
 
-        $this->errors(array_shift($validate->errors(True)));
+        $this->errors(array_shift($validate->errors($this->messages())));
         return False;
     }
 
@@ -236,6 +239,14 @@ class Uniform_Field_Core {
     public function clone_to($field_class)
     {
         return self::factory($field_class, $this->_params);
+    }
+
+    /*
+    * error messages file to use for translating error messages regarding this field
+    */
+    public function messages( $input=NULL )
+    {
+        return $this->setget('messages', $input);
     }
 
 }

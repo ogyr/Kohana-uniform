@@ -153,4 +153,17 @@ class Uniform_Fieldset_Core {
         return $this;
     }
 
+
+    /*
+    * sets error messages file to use on all fields available so far
+    */
+    public function messages_all( $file=NULL )
+    {
+        foreach( $this->_fields as $k => $f )
+        {
+            $this->_fields[$k]->messages( $file );
+        }
+        return $this;
+    }
+
 }

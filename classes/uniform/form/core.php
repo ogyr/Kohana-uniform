@@ -10,6 +10,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     private $_fieldsets = array();
 
     protected $fieldsets = array();
+    public $submit_name;
 
     public function __construct( $bind=NULL )
     {
@@ -21,12 +22,15 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
         //default Form::open params
         $this->open(
-                NULL,
+                Request::instance()->uri,
                 array(
-                    "method" => 'POST',
-                    'id' => strtolower(array_pop(explode('_', get_class($this)))).'_form'
+                    "method"    => 'POST',
+                    'id'        => $this->get_form_name() . '_form'
                 )
             );
+
+        //set submit name, so we can check if the $_POST is for us in a HMVC form controller
+        $this->submit_name = $this->get_form_name() .'_form_submit';
 
         //initialization hook
         $this->initialize();
@@ -37,6 +41,21 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $this;
     }
 
+    /*
+    * derives a form name from the forms class
+    */
+    public function get_form_name()
+    {
+        return strtolower(array_pop(explode('_', get_class($this))));
+    }
+
+    /*
+    * checks if $_POST data comes from this form by looking for the submit name we used
+    */
+    public function is_sender()
+    {
+        return isset($_POST[$this->submit_name]);
+    }
 
     /*
      * a hook to do initialization work on the form
@@ -160,14 +179,14 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     }
 
 
-    public function check()
+    public function check( $allow_empty=FALSE )
     {
         $valid = True;
         $out = array();
         foreach($this->_fields as $fname=>$field)
         {
 
-            if( $this->field($fname)->check() )
+            if( $this->field($fname)->check($allow_empty) )
             {
                 $out = array_merge($out, $this->field($fname)->validation()->as_array());
             }
@@ -211,8 +230,6 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     {
         return $data;
     }
-
-
 
 }
 

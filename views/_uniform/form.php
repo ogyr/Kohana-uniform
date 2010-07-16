@@ -3,6 +3,6 @@
 echo $form->open();
 
 echo $form->render_fields();
-echo Form::submit('submit', "Abschicken");
+echo Form::submit($form->submit_name, "Abschicken");
 
 echo Form::close();
