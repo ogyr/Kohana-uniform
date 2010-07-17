@@ -52,7 +52,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     /*
     * checks if $_POST data comes from this form by looking for the submit name we used
     */
-    public function is_sender()
+    public function sent()
     {
         return isset($_POST[$this->submit_name]);
     }
