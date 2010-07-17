@@ -2,7 +2,7 @@
 
 class Uniform_Field_Core {
 
-    protected $_template = '_uniform/field';
+    protected $_template = 'uniform/field';
     protected $_form_method  = 'input';
     public $_params = array();
 
@@ -127,6 +127,20 @@ class Uniform_Field_Core {
         return $this->setget('errors', $input);
     }
 
+    public function add_errors($input=NULL)
+    {
+        if( !is_null($input) AND !is_array($input) )
+            $input = array($input);
+
+        if( ! $this->errors() )
+            return $this->setget('errors', $input);
+
+        return $this->setget('errors', array_merge(
+            is_array($this->errors()) ? $this->errors() : array($this->errors())
+            , $input
+        ));
+    }
+
     public function template($template)
     {
         $this->_template = $template;
@@ -193,7 +207,7 @@ class Uniform_Field_Core {
         if( $success )
             return True;
 
-        $this->errors(array_shift($validate->errors($this->messages())));
+        $this->add_errors($validate->errors($this->messages()));
         return False;
     }
 

@@ -6,7 +6,7 @@ class Uniform_Fieldset_Core {
     protected $_current;
     protected $_table;
     protected $_pk;
-    protected $_template_fieldset = '_uniform/fieldset';
+    protected $_template_fieldset = 'uniform/fieldset';
 
     public function __construct($table=NULL, $pk=NULL)
     {

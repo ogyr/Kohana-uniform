@@ -6,7 +6,7 @@
 class Uniform_Form_Core extends Uniform_Fieldset {
 
     protected $_open = array();
-    protected $_template_form = '_uniform/form';
+    protected $_template_form = 'uniform/form';
     private $_fieldsets = array();
 
     protected $fieldsets = array();
@@ -265,6 +265,16 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             return  isset($this->_open[0]) ? $this->_open[0] : NULL;
         }
         $this->_open[0] = $input;
+        return $this;
+    }
+
+    public function add_errors( $errors )
+    {
+        foreach( $errors as $field => $error )
+        {
+            if( isset($this->_fields[$field]) )
+                $this->_fields[$field]->add_errors($error);
+        }
         return $this;
     }
 
