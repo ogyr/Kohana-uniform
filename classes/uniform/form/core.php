@@ -72,24 +72,31 @@ class Uniform_Form_Core extends Uniform_Fieldset {
      */
     public function add_fieldset($fieldset_name, $fields=NULL)
     {
+        $fieldset_name = strtolower($fieldset_name);
         $fieldset_class = 'Uniform_Fieldset_' . ucfirst($fieldset_name);
         $fieldset = new $fieldset_class();
 
         //add $fieldset to list of fieldsets
         if( !isset($this->_fieldsets[$fieldset_name]) )
+        {
             $this->_fieldsets[$fieldset_name] = array();
+        }
 
         //specifying fieldnames in a string separated by blanks is possible
         if( is_string($fields) )
+        {
             $fields = preg_split("/[\s,]+/", $fields, -1, PREG_SPLIT_NO_EMPTY);
+        }
 
         //if no fields are specified, add all fieldset fields
         if( is_null($fields) )
+        {
             $fields = array_keys($fieldset->_fields);
+        }
 
         foreach($fields as $f)
         {
-            $field = $fieldset->_fields[$f];
+            $field = @$fieldset->_fields[$f];
 
             //catch nonexisting fields
             if( ! $field instanceof Uniform_Field )
@@ -98,7 +105,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             }
 
             $this->_fields[$f] = $field;
-            $this->_fieldsets[strtolower($fieldset_name)][$f] = $this->_fields[$f];
+            $this->_fieldsets[$fieldset_name][$f] = $this->_fields[$f];
         }
 
         return $this;
