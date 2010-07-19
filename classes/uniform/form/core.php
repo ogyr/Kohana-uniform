@@ -177,6 +177,8 @@ class Uniform_Form_Core extends Uniform_Fieldset {
                 //check if field is an object (a la Jelly Model for relations)
                 if( is_object($v) )
                     $this->field($k)->value($v->id()); //just suppose for now it has a primary key method;
+                elseif ( is_array($v) ) //or is an object as array, -> let's take the first key
+                    $this->field($k)->value(array_shift(array_keys($v)));
                 else
                     $this->field($k)->value($v);
             }
@@ -198,7 +200,9 @@ class Uniform_Form_Core extends Uniform_Fieldset {
                 $out = array_merge($out, $this->field($fname)->validation()->as_array());
             }
             else
+            {
                 $valid = False;
+            }
         }
         return $valid ? $out : False;
     }
@@ -283,6 +287,17 @@ class Uniform_Form_Core extends Uniform_Fieldset {
                 $this->_fields[$field]->add_errors($error);
         }
         return $this;
+    }
+
+    public function errors()
+    {
+        $out = array();
+        foreach($this->_fields as $fname=>$field)
+        {
+            if( $errors = $this->field($fname)->errors() )
+                $out[$fname] = $errors;
+        }
+        return $out;
     }
 
 }

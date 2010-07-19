@@ -34,7 +34,6 @@ class Uniform_Field_Core {
         return $this;
     }
 
-
     //field names
     public function name($input=NULL)
     {
@@ -124,6 +123,13 @@ class Uniform_Field_Core {
 
     public function errors($input=NULL)
     {
+        //so we always get arrays
+        if( is_null($this->setget('errors')) )
+               $this->setget('errors', array());
+
+        if( !is_null($input) AND !is_array($input) )
+            $input = array($input);
+
         return $this->setget('errors', $input);
     }
 
@@ -132,12 +138,9 @@ class Uniform_Field_Core {
         if( !is_null($input) AND !is_array($input) )
             $input = array($input);
 
-        if( ! $this->errors() )
-            return $this->setget('errors', $input);
-
         return $this->setget('errors', array_merge(
-            is_array($this->errors()) ? $this->errors() : array($this->errors())
-            , $input
+              $this->errors(),
+              $input
         ));
     }
 
