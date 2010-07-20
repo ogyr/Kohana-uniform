@@ -11,6 +11,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
     protected $fieldsets = array();
     public $submit_name;
+    public $submit_label = 'Abschicken';
 
     public function __construct( $bind=NULL )
     {
@@ -170,6 +171,9 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         if( $use_filter )
             $bind = $this->in_filter($bind);
 
+        if( is_object($bind) )
+            $bind = $bind->as_array();
+
         foreach($bind as $k => $v)
         {
             if( isset($this->_fields[$k]) )
@@ -298,6 +302,15 @@ class Uniform_Form_Core extends Uniform_Fieldset {
                 $out[$fname] = $errors;
         }
         return $out;
+    }
+
+    function submit_label( $label=NULL )
+    {
+        if( is_null($label) )
+            return $this->submit_label;
+
+        $this->submit_label = $label;
+        return $this;
     }
 
 }
