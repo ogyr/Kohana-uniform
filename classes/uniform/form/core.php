@@ -212,7 +212,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     }
 
 
-    public function as_array()
+    public function as_array( $use_filter=True )
     {
         $out = array();
         foreach($this->_fields as $fname=>$field)
@@ -220,7 +220,10 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             $out[$fname] = $field->value();
         }
 
-        return $this->out_filter($out);
+        if( $use_filter )
+            return $this->out_filter($out);
+
+        return $out;
     }
 
 
