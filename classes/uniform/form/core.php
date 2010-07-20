@@ -170,7 +170,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
         if( is_object($bind) )
             $bind = $bind->as_array();
-            
+
         if( $use_filter )
             $bind = $this->in_filter($bind);
 
@@ -192,7 +192,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     }
 
 
-    public function check( $allow_empty=FALSE )
+    public function check( $allow_empty=FALSE, $use_filter=True )
     {
         $valid = True;
         $out = array();
@@ -208,7 +208,9 @@ class Uniform_Form_Core extends Uniform_Fieldset {
                 $valid = False;
             }
         }
-        return $valid ? $out : False;
+        return $valid ?
+            ($use_filter ? $this->out_filter($out) : $out) :
+            False;
     }
 
 
