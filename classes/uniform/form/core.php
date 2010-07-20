@@ -168,11 +168,11 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         if( is_null($bind) )
             return $this;
 
-        if( $use_filter )
-            $bind = $this->in_filter($bind);
-
         if( is_object($bind) )
             $bind = $bind->as_array();
+            
+        if( $use_filter )
+            $bind = $this->in_filter($bind);
 
         foreach($bind as $k => $v)
         {
