@@ -3,6 +3,8 @@
 echo $form->open();
 
 echo $form->render_fields();
-echo Form::submit($form->submit_name, $form->submit_label);
 
-echo Form::close();
+echo $form->submit();
+
+echo $form->close();
+

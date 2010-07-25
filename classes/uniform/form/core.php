@@ -317,13 +317,28 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $out;
     }
 
-    function submit_label( $label=NULL )
+    public function submit_label( $label=NULL )
     {
         if( is_null($label) )
             return $this->submit_label;
 
         $this->submit_label = $label;
         return $this;
+    }
+
+
+    public function submit( $name=NULL )
+    {
+        if( is_null($name) )
+            return Form::submit($this->submit_name, $this->submit_label);
+
+        $this->submit_name = $name;
+        return $this;
+    }
+
+    public function close()
+    {
+        return Form::close();
     }
 
 }
