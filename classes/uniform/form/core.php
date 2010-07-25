@@ -134,10 +134,18 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
     public function render_fields( $fields=NULL )
     {
+        $out = array();
+        if( is_array($fields) )
+        {
+            foreach( $fields as $f )
+            {
+                $out[$f] = $this->_fields[$f];
+            }
+        }
+
         return View::factory($this->_template_fieldset)
             ->set(array(
-                'fields'    => is_null($fields) ? $this->_fields :
-                    array_intersect_key($this->_fields, array_flip($fields)),
+                'fields'    => is_null($fields) ? $this->_fields : $out,
                 'form'      => $this
             ));
     }
