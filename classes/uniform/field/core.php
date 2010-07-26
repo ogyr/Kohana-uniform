@@ -235,7 +235,10 @@ class Uniform_Field_Core {
 
     public function render_label()
     {
-        return Form::label($this->name(), $this->hname());
+        if( $this->label() )
+            return Form::label($this->name(), $this->hname());
+
+        return '';
     }
 
     public function render($prefix=NULL, $suffix=NULL)
@@ -246,8 +249,7 @@ class Uniform_Field_Core {
 
         return View::factory($this->_template)
             ->set(array(
-                'label' => $this->label() ? $this->render_label() : '',
-                'field' => $this->render_input(),
+                'field' => $this,
                 'prefix'    => is_null($prefix) ? $this->prefix() : $prefix,
                 'suffix'    => is_null($suffix) ? $this->suffix() : $suffix,
             ));

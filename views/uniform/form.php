@@ -2,7 +2,9 @@
 
 echo $form->open();
 
-echo $form->render_fields();
+echo "<div class='uniform_form'>";
+    echo $form->render_fields();
+echo '</div>';
 
 echo $form->submit();
 

@@ -12,6 +12,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     protected $fieldsets = array();
     public $submit_name;
     public $submit_label = 'Abschicken';
+    public $form_errors = array();
 
     public function __construct( $bind=NULL )
     {
@@ -296,17 +297,22 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $this;
     }
 
+
     public function add_errors( $errors )
     {
         foreach( $errors as $field => $error )
         {
             if( isset($this->_fields[$field]) )
                 $this->_fields[$field]->add_errors($error);
+            else //generic error or missing field
+                $this->form_errors[$field] = $error;
         }
+
         return $this;
     }
 
-    public function errors()
+
+    public function errors() //form and field errors
     {
         $out = array();
         foreach($this->_fields as $fname=>$field)
@@ -314,8 +320,16 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             if( $errors = $this->field($fname)->errors() )
                 $out[$fname] = $errors;
         }
-        return $out;
+
+        return $out + $this->form_errors;
     }
+
+
+    public function form_errors() //form errors only
+    {
+        return $this->form_errors;
+    }
+
 
     public function submit_label( $label=NULL )
     {
