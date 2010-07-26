@@ -40,13 +40,16 @@ class Uniform_Fieldset_Core {
             $fname = $name;
             $ftype = $prop['type'];
 
-            $this->add_field($fname)
-                ->type($field_types[$ftype])
-                ->length( isset($prop['character_maximum_length']) ?
-                    $prop['character_maximum_length'] : 30
-                )
-                ->mysqltype($ftype);
-                //echo Kohana::debug($this->field());
+            if( $fname != $pk ) //exclude primary key from forms
+            {
+                $this->add_field($fname)
+                    ->type($field_types[$ftype])
+                    ->length( isset($prop['character_maximum_length']) ?
+                        $prop['character_maximum_length'] : 30
+                    )
+                    ->mysqltype($ftype);
+                    //echo Kohana::debug($this->field());
+            }
         }
 
         //echo Kohana::debug($this); die();
