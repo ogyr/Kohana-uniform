@@ -14,6 +14,8 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     public $submit_label = 'Abschicken';
     public $form_errors = array();
 
+    private $no_submit = False;
+
     public function __construct( $bind=NULL )
     {
         //add fields
@@ -260,15 +262,6 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $data;
     }
 
-    public function params( $input=NULL )
-    {
-        if( is_null($input) )
-        {
-            return  isset($this->_open[1]) ? $this->_open[1] : array();
-        }
-        $this->_open[1] = $input;
-    }
-
     public function set_param( $name, $val )
     {
         if( isset($this->_open[1]) )
@@ -353,6 +346,26 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     public function close()
     {
         return Form::close();
+    }
+
+    public function no_submit($no_submit = NULL)
+    {
+        if( !is_null($no_submit) )
+        {
+            $this->no_submit = $no_submit;
+            return $this;
+        }
+
+        return (bool)$this->no_submit;
+    }
+
+    public function id( $input=NULL )
+    {
+        if( is_null($input) )
+            return @$this->_open['id'];
+
+        $this->_open['id'] = $input;
+        return $this;
     }
 
 }

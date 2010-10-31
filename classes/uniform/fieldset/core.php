@@ -142,10 +142,20 @@ class Uniform_Fieldset_Core {
         //defaults
         $this->hname(ucfirst($fname))
             ->suffix("<br />\n")
-            ->params(array());
+            ->field_params(array());
 
         return $this;
     }
+
+    /*
+     * lets you set field params in initialize() from Uniform_form
+     */
+    public function field_params( $params )
+    {
+        $this->_fields[$this->_current]->params($params);
+        return $this;
+    }
+
 
     /*
      * removes a Field

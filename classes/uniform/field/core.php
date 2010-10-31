@@ -55,14 +55,15 @@ class Uniform_Field_Core {
     //various params
     public function params($input=NULL)
     {
-        if(!is_null($input))
-            $this->_params['params']=$input;
+        if( !isset($this->_params['params']) )
+            $this->_params['params'] = array();
 
-        return array_merge(
-            $this->default_params(),
-            isset($this->_params['params']) ?
-                $this->_params['params'] : array()
-        );
+        if( is_null($input) )
+            return  array_merge($this->default_params(), $this->_params['params']);
+
+        $this->_params['params'] = array_merge($this->_params['params'], $input);
+
+        return $this;
     }
 
 
@@ -108,12 +109,15 @@ class Uniform_Field_Core {
 
     public function length($input=NULL)
     {
-        return $this->setget('length', $input);
+        return $this->size($input, 'length');
     }
 
-    public function size($input=NULL)
+    public function size($input=NULL, $field='size')
     {
-        return $this->setget('length', $input);
+        if( is_null($input) )
+            return @$this->_params['params'][$field];
+
+        return $this->set_param($field, $input);
     }
 
     public function input($input=NULL)

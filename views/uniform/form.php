@@ -6,7 +6,8 @@ echo "<div class='uniform_form'>";
     echo $form->render_fields();
 echo '</div>';
 
-echo $form->submit();
+if( !$form->no_submit() )
+    echo $form->submit();
 
 echo $form->close();
 
