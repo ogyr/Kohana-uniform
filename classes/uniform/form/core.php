@@ -362,9 +362,9 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     public function id( $input=NULL )
     {
         if( is_null($input) )
-            return @$this->_open['id'];
+            return @$this->_open[1]['id'];
 
-        $this->_open['id'] = $input;
+        $this->_open[1]['id'] = $input;
         return $this;
     }
 
