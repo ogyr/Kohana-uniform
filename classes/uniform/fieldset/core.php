@@ -44,9 +44,9 @@ class Uniform_Fieldset_Core {
             {
                 $this->add_field($fname)
                     ->type($field_types[$ftype])
-                    ->length( isset($prop['character_maximum_length']) ?
+                    /*->length( isset($prop['character_maximum_length']) ?
                         $prop['character_maximum_length'] : 30
-                    )
+                    )*/
                     ->mysqltype($ftype);
                     //echo Kohana::debug($this->field());
             }
