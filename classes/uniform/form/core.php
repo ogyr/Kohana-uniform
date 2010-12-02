@@ -69,6 +69,15 @@ class Uniform_Form_Core extends Uniform_Fieldset {
         return $this;
     }
 
+    public function add_form($form_name, $fields=NULL)
+    {
+        $form = is_object($form_name) ?
+            $form_name :
+            Uniform::factory($form_name);
+
+        $this->_fields += $form->_fields;
+        return $this;
+    }
 
     /*
      * Adds $fields of $fieldset to this form
@@ -114,7 +123,6 @@ class Uniform_Form_Core extends Uniform_Fieldset {
 
         return $this;
     }
-
 
     /*
      * removes all the fields that were added from the fieldset $fieldset
