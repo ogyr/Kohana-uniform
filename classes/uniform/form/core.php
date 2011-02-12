@@ -24,9 +24,21 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             $this->add_fieldset($fieldset, $fields);
         }
 
+        //get current request URI
+        if( method_exists('Request', 'initial') )
+        {
+            //Kohana 3.1 onwards
+            $uri = Request::initial()->uri();
+        }
+        else
+        {
+            $uri = Request::$instance->uri();
+        }
+
+
         //default Form::open params
         $this->open(
-                Request::instance()->uri,
+                $uri,
                 array(
                     "method"    => 'POST',
                     'id'        => $this->get_form_name() . '_form'
