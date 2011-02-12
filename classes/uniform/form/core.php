@@ -161,7 +161,7 @@ class Uniform_Form_Core extends Uniform_Fieldset {
             ));
     }
 
-    public function field($fname)
+    public function field($fname=NULL)
     {
         return $this->_fields[$fname];
     }
