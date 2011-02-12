@@ -62,7 +62,8 @@ class Uniform_Form_Core extends Uniform_Fieldset {
     */
     public function get_form_name()
     {
-        return strtolower(array_pop(explode('_', get_class($this))));
+        $class = explode('_', get_class($this));
+        return strtolower(array_pop($class));
     }
 
     /*
